@@ -111,3 +111,4 @@ src/[Aa]ssets/Plugins/Editor/JetBrains*
 *.log
 
 report.json
+src/[Aa]ssets/_[Rr]ecovery*
