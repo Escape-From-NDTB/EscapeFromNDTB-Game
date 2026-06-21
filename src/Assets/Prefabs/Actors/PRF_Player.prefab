@@ -238,6 +238,7 @@ GameObject:
   - component: {fileID: 8881412159855322876}
   - component: {fileID: 1931988888818653942}
   - component: {fileID: 1607225861570514772}
+  - component: {fileID: 7419379037446761161}
   m_Layer: 0
   m_Name: PRF_Player
   m_TagString: Player
@@ -386,7 +387,7 @@ MonoBehaviour:
   _runSpeed: 8
   _stealSpeed: 3
   _jumpForce: 5
-  gravity: -9.81
+  _gravity: -9.81
 --- !u!114 &1607225861570514772
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -399,4 +400,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dbbbba43ef5ad0ceaa176e8ab599c08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rotateSpeed: 10
+  _rotateSpeed: 20
+--- !u!114 &7419379037446761161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7602411305850658660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84464e8f2a7cc10cfaa6fb072ea4d5dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxHunger: 100
+  MaxSanity: 100
+  MaxFatigue: 100
+  CurrentHunger: 0
+  CurrentSanity: 0
+  CurrentFatigue: 0
+  HungerDecayRate: 0.5
+  SanityDecayRate: 0.1
+  FatigueDecayRate: 0.2
+  RunHungerMultiplier: 2
+  RunFatigueMultiplier: 3
+  CrouchHungerMultiplier: 0.5
+  JumpHungerCost: 1
+  JumpFatigueCost: 2

@@ -5,64 +5,64 @@ namespace NDTB.Systems.Player
 {
     public class CameraController : MonoBehaviour
     {
-        [SerializeField][Range(1, 20)] private float _rotateSpeed = 10;
-        private Transform _cameraTransform;
-        private InputSystem_Actions _input;
+        [SerializeField][Range(1, 20)] private float rotate_Speed = 10;
+        private Transform camera_Transform;
+        private InputSystem_Actions input;
 
-        private bool _isActive = false;
+        private bool is_Active = false;
 
-        private float _rotationX = 0f;
+        private float rotation_X = 0f;
 
         private void Awake()
         {
-            _input = new InputSystem_Actions();
+            input = new InputSystem_Actions();
         }
 
         private void OnEnable()
         {
-            _input.Enable();
+            input.Enable();
         }
 
         private void OnDisable()
         {
-            _input.Disable();
+            input.Disable();
         }
 
         private void OnDestroy()
         {
-            _input.Dispose();
+            input.Dispose();
         }
 
         private void Start()
         {
-            _cameraTransform = GetComponentInChildren<Camera>().transform;
+            camera_Transform = GetComponentInChildren<Camera>().transform;
             Activate();
         }
 
         private void Update()
         {
-            if (!_isActive) return;
+            if (!is_Active) return;
 
-            Vector2 lookInput = _input.Player.Look.ReadValue<Vector2>();
-            float mouseX = lookInput.x * _rotateSpeed * Time.deltaTime;
-            float mouseY = lookInput.y * _rotateSpeed * Time.deltaTime;
+            Vector2 lookInput = input.Player.Look.ReadValue<Vector2>();
+            float mouseX = lookInput.x * rotate_Speed * Time.deltaTime;
+            float mouseY = lookInput.y * rotate_Speed * Time.deltaTime;
 
             transform.Rotate(Vector3.up * mouseX);
 
-            _rotationX -= mouseY;
-            _rotationX = Mathf.Clamp(_rotationX, -90f, 90f);
-            _cameraTransform.localRotation = Quaternion.Euler(_rotationX, 0f, 0f);
+            rotation_X -= mouseY;
+            rotation_X = Mathf.Clamp(rotation_X, -90f, 90f);
+            camera_Transform.localRotation = Quaternion.Euler(rotation_X, 0f, 0f);
         }
 
         public void Activate()
         {
-            _isActive = true;
+            is_Active = true;
             Cursor.lockState = CursorLockMode.Locked;
         }
 
         public void Deactivate()
         {
-            _isActive = false;
+            is_Active = false;
             Cursor.lockState = CursorLockMode.None;
         }
     }

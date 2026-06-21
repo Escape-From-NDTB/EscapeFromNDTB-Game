@@ -4,10 +4,15 @@ on:
   push:
     paths:
       - 'src/Assets/Scripts/**'
+      - '.editorconfig'
 
 jobs:
   lint:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: src
+
     steps:
       - uses: actions/checkout@v4
 
@@ -17,11 +22,12 @@ jobs:
 
       - name: Check C# formatting, style & analyzers
         run: |
-          CSPROJ=$(find src/Assets/Scripts -name '*.csproj' 2>/dev/null | head -1)
-          if [ -n "$CSPROJ" ]; then
-            echo "Found project: $CSPROJ"
-            dotnet format --verify-no-changes "$CSPROJ"
-          else
-            echo "No .csproj found — skipping format checks."
-            echo "Open the project in Unity to generate .csproj files."
-          fi
+          for CSPROJ in Assembly-CSharp.csproj Assembly-CSharp-Editor.csproj; do
+            if [ -f "$CSPROJ" ]; then
+              echo "::group::Checking $CSPROJ"
+              dotnet format --verify-no-changes --severity error "$CSPROJ"
+              echo "::endgroup::"
+            else
+              echo "⚠ $CSPROJ not found — skipping"
+            fi
+          done
