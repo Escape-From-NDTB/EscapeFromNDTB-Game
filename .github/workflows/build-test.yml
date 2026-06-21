@@ -1,0 +1,237 @@
+name: Build & Test
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+env:
+  UNITY_VERSION: 6000.4.10f1
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    permissions:
+      checks: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - uses: actions/cache@v4
+        with:
+          path: src/Library
+          key: Library-${{ runner.os }}-${{ env.UNITY_VERSION }}-${{ hashFiles('src/Assets/**', 'src/Packages/**', 'src/ProjectSettings/**') }}
+          restore-keys: |
+            Library-${{ runner.os }}-${{ env.UNITY_VERSION }}-
+            Library-${{ runner.os }}-
+
+      - uses: game-ci/unity-test-runner@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          unityVersion: ${{ env.UNITY_VERSION }}
+          projectPath: src
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+
+  build-linux:
+    needs: [test]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - uses: actions/cache@v4
+        with:
+          path: src/Library
+          key: Library-${{ runner.os }}-${{ env.UNITY_VERSION }}-${{ hashFiles('src/Assets/**', 'src/Packages/**', 'src/ProjectSettings/**') }}
+          restore-keys: |
+            Library-${{ runner.os }}-${{ env.UNITY_VERSION }}-
+            Library-${{ runner.os }}-
+
+      - uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          unityVersion: ${{ env.UNITY_VERSION }}
+          targetPlatform: StandaloneLinux64
+          projectPath: src
+          allowDirtyBuild: true
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-StandaloneLinux64
+          path: build/StandaloneLinux64
+
+      - name: Deploy to Telegram
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_UPLOADER_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          cd build/StandaloneLinux64
+          zip -r ../../build-StandaloneLinux64.zip ./*
+          cd ../..
+          curl -F "chat_id=$TELEGRAM_CHAT_ID" \
+               -F "document=@build-StandaloneLinux64.zip" \
+               -F "caption=Build: StandaloneLinux64" \
+               "https://api.telegram.org/bot$TELEGRAM_TOKEN/sendDocument"
+
+  build-windows:
+    needs: [test]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - uses: actions/cache@v4
+        with:
+          path: src/Library
+          key: Library-${{ runner.os }}-${{ env.UNITY_VERSION }}-${{ hashFiles('src/Assets/**', 'src/Packages/**', 'src/ProjectSettings/**') }}
+          restore-keys: |
+            Library-${{ runner.os }}-${{ env.UNITY_VERSION }}-
+            Library-${{ runner.os }}-
+
+      - uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          unityVersion: ${{ env.UNITY_VERSION }}
+          targetPlatform: StandaloneWindows64
+          projectPath: src
+          allowDirtyBuild: true
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-StandaloneWindows64
+          path: build/StandaloneWindows64
+
+      - name: Deploy to Telegram
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_UPLOADER_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          cd build/StandaloneWindows64
+          zip -r ../../build-StandaloneWindows64.zip ./*
+          cd ../..
+          curl -F "chat_id=$TELEGRAM_CHAT_ID" \
+               -F "document=@build-StandaloneWindows64.zip" \
+               -F "caption=Build: StandaloneWindows64" \
+               "https://api.telegram.org/bot$TELEGRAM_TOKEN/sendDocument"
+
+  build-mac:
+    needs: [test]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - uses: actions/cache@v4
+        with:
+          path: src/Library
+          key: Library-${{ runner.os }}-${{ env.UNITY_VERSION }}-${{ hashFiles('src/Assets/**', 'src/Packages/**', 'src/ProjectSettings/**') }}
+          restore-keys: |
+            Library-${{ runner.os }}-${{ env.UNITY_VERSION }}-
+            Library-${{ runner.os }}-
+
+      - uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          unityVersion: ${{ env.UNITY_VERSION }}
+          targetPlatform: StandaloneOSX
+          projectPath: src
+          allowDirtyBuild: true
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-StandaloneOSX
+          path: build/StandaloneOSX
+
+      - name: Deploy to Telegram
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_UPLOADER_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          cd build/StandaloneOSX
+          zip -r ../../build-StandaloneOSX.zip ./*
+          cd ../..
+          curl -F "chat_id=$TELEGRAM_CHAT_ID" \
+               -F "document=@build-StandaloneOSX.zip" \
+               -F "caption=Build: StandaloneOSX" \
+               "https://api.telegram.org/bot$TELEGRAM_TOKEN/sendDocument"
+
+  release:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [build-linux, build-windows, build-mac]
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      - name: Extract bundle version
+        id: version
+        run: |
+          VERSION=$(grep 'bundleVersion:' src/ProjectSettings/ProjectSettings.asset \
+            | sed 's/.*bundleVersion: //')
+          echo "VERSION=v$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Check if tag exists
+        id: check_tag
+        run: |
+          if git rev-parse "${{ steps.version.outputs.VERSION }}" >/dev/null 2>&1; then
+            echo "EXISTS=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "EXISTS=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create and push tag
+        if: steps.check_tag.outputs.EXISTS == 'false'
+        run: |
+          git tag "${{ steps.version.outputs.VERSION }}"
+          git push origin "${{ steps.version.outputs.VERSION }}"
+
+      - name: Create Draft Release
+        if: steps.check_tag.outputs.EXISTS == 'false'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ steps.version.outputs.VERSION }}" \
+            --draft \
+            --target "${{ github.sha }}" \
+            --title "${{ steps.version.outputs.VERSION }}"
+
+      - uses: actions/download-artifact@v4
+        if: steps.check_tag.outputs.EXISTS == 'false'
+        with:
+          path: artifacts
+
+      - name: Upload Release Assets
+        if: steps.check_tag.outputs.EXISTS == 'false'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for dir in artifacts/*/; do
+            name=$(basename "$dir")
+            zip -r "${name}.zip" "$dir"
+            gh release upload "${{ steps.version.outputs.VERSION }}" \
+              "${name}.zip" --clobber
+          done

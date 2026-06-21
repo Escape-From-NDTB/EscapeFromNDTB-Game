@@ -1,0 +1,36 @@
+name: Lint
+
+on:
+  push:
+    paths:
+      - 'src/Assets/Scripts/**'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+
+      - name: Check whitespace formatting
+        run: |
+          if [ -d "src/Assets/Scripts" ]; then
+            dotnet format whitespace --verify-no-changes src/Assets/Scripts
+          else
+            echo "src/Assets/Scripts directory not found — skipping"
+          fi
+
+      - name: Check C# style & analyzers
+        run: |
+          CSPROJ=$(find src/Assets/Scripts -name '*.csproj' 2>/dev/null | head -1)
+          if [ -n "$CSPROJ" ]; then
+            echo "Found project: $CSPROJ"
+            dotnet format style --verify-no-changes "$CSPROJ"
+            dotnet format analyzers --verify-no-changes "$CSPROJ"
+          else
+            echo "No .csproj found — skipping style/analyzer checks."
+            echo "Open the project in Unity to generate .csproj files."
+          fi
