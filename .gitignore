@@ -61,6 +61,8 @@ ExportedObj/
 *.opendb
 *.VC.db
 
+!src/Lint.csproj
+
 # Unity: generated meta for build artifacts
 *.pidb.meta
 *.pdb.meta
@@ -107,3 +109,5 @@ src/[Aa]ssets/Plugins/Editor/JetBrains*
 
 # Logs
 *.log
+
+report.json
