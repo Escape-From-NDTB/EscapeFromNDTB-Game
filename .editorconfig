@@ -1,0 +1,120 @@
+root = true
+
+[*]
+indent_style = space
+indent_size = 4
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.{cs,md,json,yml,yaml}]
+indent_size = 4
+
+# ========================================
+# C# — Style & Analyzers (dotnet format)
+# ========================================
+[*.cs]
+
+# Access modifiers — must be explicit
+dotnet_style_require_accessibility_modifiers = always:error
+
+# Modifier preferences
+csharp_preferred_modifier_order = public, private, protected, internal, static, extern, new, virtual, abstract, sealed, override, readonly, unsafe, volatile, async:error
+dotnet_style_readonly_field = true:error
+
+# ========================================
+# Naming conventions
+# ========================================
+
+# --- Private fields: _camelCase ---
+dotnet_naming_rule.private_fields_should_be_camel.severity = error
+dotnet_naming_rule.private_fields_should_be_camel.symbols = private_fields
+dotnet_naming_rule.private_fields_should_be_camel.style = camel_underscore
+
+dotnet_naming_symbols.private_fields.applicable_kinds = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private
+
+dotnet_naming_style.camel_underscore.capitalization = camel_case
+dotnet_naming_style.camel_underscore.word_separator = _
+
+# --- Private static fields: s_CamelCase ---
+dotnet_naming_rule.private_static_fields_should_be_camel.severity = error
+dotnet_naming_rule.private_static_fields_should_be_camel.symbols = private_static_fields
+dotnet_naming_rule.private_static_fields_should_be_camel.style = static_prefix_camel
+
+dotnet_naming_symbols.private_static_fields.applicable_kinds = field
+dotnet_naming_symbols.private_static_fields.applicable_accessibilities = private
+dotnet_naming_symbols.private_static_fields.required_modifiers = static
+
+dotnet_naming_style.static_prefix_camel.required_prefix = s_
+dotnet_naming_style.static_prefix_camel.capitalization = camel_case
+
+# --- Public fields: PascalCase ---
+dotnet_naming_rule.public_fields_should_be_pascal.severity = error
+dotnet_naming_rule.public_fields_should_be_pascal.symbols = public_fields
+dotnet_naming_rule.public_fields_should_be_pascal.style = pascal
+
+dotnet_naming_symbols.public_fields.applicable_kinds = field
+dotnet_naming_symbols.public_fields.applicable_accessibilities = public, internal, protected, protected_internal, private_protected
+
+dotnet_naming_style.pascal.capitalization = pascal_case
+
+# --- Methods: PascalCase ---
+dotnet_naming_rule.methods_should_be_pascal.severity = error
+dotnet_naming_rule.methods_should_be_pascal.symbols = methods
+dotnet_naming_rule.methods_should_be_pascal.style = pascal
+
+dotnet_naming_symbols.methods.applicable_kinds = method
+
+# --- Properties: PascalCase ---
+dotnet_naming_rule.properties_should_be_pascal.severity = error
+dotnet_naming_rule.properties_should_be_pascal.symbols = properties
+dotnet_naming_rule.properties_should_be_pascal.style = pascal
+
+dotnet_naming_symbols.properties.applicable_kinds = property
+
+# --- Events: PascalCase ---
+dotnet_naming_rule.events_should_be_pascal.severity = error
+dotnet_naming_rule.events_should_be_pascal.symbols = events
+dotnet_naming_rule.events_should_be_pascal.style = pascal
+
+dotnet_naming_symbols.events.applicable_kinds = event
+
+# --- Interfaces: IPascalCase ---
+dotnet_naming_rule.interfaces_should_be_ipascal.severity = error
+dotnet_naming_rule.interfaces_should_be_ipascal.symbols = interfaces
+dotnet_naming_rule.interfaces_should_be_ipascal.style = i_prefix_pascal
+
+dotnet_naming_symbols.interfaces.applicable_kinds = interface
+
+dotnet_naming_style.i_prefix_pascal.required_prefix = I
+dotnet_naming_style.i_prefix_pascal.capitalization = pascal_case
+
+# --- Type parameters: TPascalCase ---
+dotnet_naming_rule.type_parameters_should_be_tpascal.severity = error
+dotnet_naming_rule.type_parameters_should_be_tpascal.symbols = type_parameters
+dotnet_naming_rule.type_parameters_should_be_tpascal.style = t_prefix_pascal
+
+dotnet_naming_symbols.type_parameters.applicable_kinds = type_parameter
+
+dotnet_naming_style.t_prefix_pascal.capitalization = pascal_case
+
+# ========================================
+# C# Analyzer diagnostics severity
+# ========================================
+
+# IDE0044: Make field readonly (if only assigned in constructor)
+dotnet_diagnostic.IDE0044.severity = warning
+
+# IDE0051: Remove unused private members
+dotnet_diagnostic.IDE0051.severity = warning
+
+# IDE0052: Remove unread private members
+dotnet_diagnostic.IDE0052.severity = warning
+
+# IDE0060: Remove unused parameter
+dotnet_diagnostic.IDE0060.severity = warning
+
+# IDE0074: Use coalesce expression
+dotnet_diagnostic.IDE0074.severity = suggestion
