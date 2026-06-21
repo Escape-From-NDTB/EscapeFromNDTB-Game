@@ -1,0 +1,31 @@
+name: "Feature request"
+description: Create a new ticket for a feature.
+title: "[Feature] - <title>"
+labels: [
+  "enhancement"
+]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: "Описание"
+      description: Опишите свою идею
+      placeholder: Описание идеи
+    validations:
+      required: true
+  - type: textarea
+    id: expect_to_see
+    attributes:
+      label: "Хочу видеть"
+      description: Опишите что вы хотите видеть в предложеной фитче
+      placeholder: Я хочу видеть ...
+    validations:
+      required: true
+  - type: textarea
+    id: for_what
+    attributes:
+      label: "Для чего"
+      description: Зачем вам нужна эта функция
+      placeholder: Я хочу видеть это для ...
+    validations:
+      required: true

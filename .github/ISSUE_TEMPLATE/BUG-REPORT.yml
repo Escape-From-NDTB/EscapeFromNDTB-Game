@@ -1,0 +1,52 @@
+name: "Bug Report"
+description: Create a new ticket for a bug.
+title: "[BUG] - <title>"
+labels: [
+  "bug"
+]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: "Описание"
+      description: Напишите описание вашей проблемы
+      placeholder: Короткое описание проблемы
+    validations:
+      required: true
+  - type: textarea
+    id: instruction
+    attributes:
+      label: "Инструкция"
+      description: Опишите как вы нашли баг
+      value: |
+        1. Зайти в '...'
+        2. Нажать на '....'
+        3. Проскролить до '....'
+        4. Увидеть ошибку
+      render: bash
+    validations:
+      required: true
+  - type: textarea
+    id: expect_to_see
+    attributes:
+      label: "Ожидал увидеть"
+      description: Опишите что вы ожидали увидеть после этой инструкции
+      placeholder: Я хотел увидеть ...
+    validations:
+      required: true
+  - type: textarea
+    id: see
+    attributes:
+      label: "See"
+      description: Опишите что вы увидели после этой инструкции
+      placeholder: Я увидел ...
+    validations:
+      required: true
+  - type: textarea
+    id: for_what
+    attributes:
+      label: "Для чего"
+      description: Напишите почему вы создали этот issue
+      placeholder: Я создал этот issue, потому что ...
+    validations:
+      required: false

@@ -1,0 +1,49 @@
+name: "3D modeling task"
+description: Create a new ticket for 3D modeling
+title: "[3D] - <title>"
+labels: [
+  "3d-model"
+]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: "Описание задачи"
+      description: Что именно нужно смоделировать
+      placeholder: Описание модели / ассета
+    validations:
+      required: true
+  - type: textarea
+    id: references
+    attributes:
+      label: "Референсы / Концепт"
+      description: Ссылки на референсы, концепт-арт, примеры
+      placeholder: Ссылки или пути до файлов
+    validations:
+      required: false
+  - type: dropdown
+    id: asset_type
+    attributes:
+      label: "Тип ассета"
+      description: Категория модели
+      options:
+        - Персонаж
+        - Пропс
+        - Окружение
+        - Анимация
+        - Другое
+      default: 0
+    validations:
+      required: true
+  - type: textarea
+    id: tech_specs
+    attributes:
+      label: "Особые технические требования (при наличии)"
+      description: Полигонаж, размер текстур, формат, LOD и т.д.
+      placeholder: |
+        - Полигоны: ~5000
+        - Текстуры: 2048x2048
+        - Формат: FBX
+        - LOD: да / нет
+    validations:
+      required: false
