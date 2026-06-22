@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using NDTB.Data;
-using NDTB.UI.Helpers;
+using NDTB.UI;
 using UnityEngine;
 using UnityEngine.UI;
+
 namespace NDTB.Systems.Player.Inventory
 {
     public class Inventory : MonoBehaviour
@@ -11,48 +12,45 @@ namespace NDTB.Systems.Player.Inventory
         public event Action<InventoryItem> OnItemAdded;
         public event Action<InventoryItem> OnItemRemoved;
 
-        private HandInventory _handInventory;
+        private HandInventory hand_Inventory;
 
-        public bool IsOpen => _inventoryUi.activeSelf;
+        public bool IsOpen => inventory_UI.activeSelf;
 
         [Header("Grid Settings")]
-        [SerializeField] private int _width = 6;
+        [SerializeField] private int width = 6;
+        [SerializeField] private int height = 3;
 
-        [SerializeField] private int _height = 3;
-
-        private InventoryItem[,] _grid;
-        private List<InventoryItem> _items = new List<InventoryItem>();
+        private InventoryItem[,] grid;
+        private List<InventoryItem> items = new List<InventoryItem>();
 
         [Header("UI")]
-        [SerializeField] private GameObject _inventoryUi;
+        [SerializeField] private GameObject inventory_UI;
 
-        private RectTransform _leftHandInventoryRect;
-        private RectTransform _rightHandInventoryRect;
-        private RectTransform _leftPocketRect;
-        private RectTransform _rightPocketRect;
+        private RectTransform left_Hand_Inventory_Rect;
+        private RectTransform right_Hand_Inventory_Rect;
+        private RectTransform left_Pocket_Rect;
+        private RectTransform right_Pocket_Rect;
 
         [Header("Drop Settings")]
-        private Transform _playerCameraTransform;
-
-        [SerializeField] private float _dropForce = 5f;
-
-        [SerializeField] private float _dropOffset = 1.5f;
+        private Transform player_Camera_Transform;
+        [SerializeField] private float drop_Force = 5f;
+        [SerializeField] private float drop_Offset = 1.5f;
 
         private void Awake()
         {
-            _grid = new InventoryItem[_width, _height];
-            _handInventory = GetComponent<HandInventory>();
-            _playerCameraTransform = GetComponentInChildren<Camera>().transform;
+            grid = new InventoryItem[width, height];
+            hand_Inventory = GetComponent<HandInventory>();
+            player_Camera_Transform = GetComponentInChildren<Camera>().transform;
 
-            _leftHandInventoryRect = _handInventory.LeftHandInventory.GetComponent<RectTransform>();
-            _rightHandInventoryRect = _handInventory.RightHandInventory.GetComponent<RectTransform>();
-            _leftPocketRect = _handInventory.LeftPocket.GetComponent<RectTransform>();
-            _rightPocketRect = _handInventory.RightPocket.GetComponent<RectTransform>();
+            left_Hand_Inventory_Rect = hand_Inventory.LeftHandInventory.GetComponent<RectTransform>();
+            right_Hand_Inventory_Rect = hand_Inventory.RightHandInventory.GetComponent<RectTransform>();
+            left_Pocket_Rect = hand_Inventory.LeftPocket.GetComponent<RectTransform>();
+            right_Pocket_Rect = hand_Inventory.RightPocket.GetComponent<RectTransform>();
         }
 
         public void DropItemFromHand(Hand hand, bool isPocket)
         {
-            var item = isPocket ? _handInventory.UnequipFromPocket(hand) : _handInventory.UnequipFromHand(hand);
+            var item = isPocket ? hand_Inventory.UnequipFromPocket(hand) : hand_Inventory.UnequipFromHand(hand);
             if (item == null)
                 return;
             DropItem(item);
@@ -67,20 +65,20 @@ namespace NDTB.Systems.Player.Inventory
             RemoveItem(item);
         }
 
-        private void DropItem(SO_ItemData itemData)
+        private void DropItem(ItemData itemData)
         {
-            Vector3 spawnPosition = _playerCameraTransform.position + _playerCameraTransform.forward * _dropOffset;
+            Vector3 spawnPosition = player_Camera_Transform.position + player_Camera_Transform.forward * drop_Offset;
             GameObject droppedItemObj = Instantiate(itemData.Prefab, spawnPosition, Quaternion.identity);
 
             if (droppedItemObj.TryGetComponent<Rigidbody>(out var rb))
             {
-                rb.AddForce(_playerCameraTransform.forward * _dropForce, ForceMode.Impulse);
+                rb.AddForce(player_Camera_Transform.forward * drop_Force, ForceMode.Impulse);
             }
         }
 
         public List<InventoryItem> GetItems()
         {
-            return _items;
+            return items;
         }
 
         public bool IsPlacementPossible(InventoryItem item)
@@ -90,7 +88,7 @@ namespace NDTB.Systems.Player.Inventory
 
         public bool IsPlacementPossible(int startX, int startY, int itemWidth, int itemHeight, InventoryItem item)
         {
-            if (startX < 0 || startY < 0 || startX + itemWidth > _width || startY + itemHeight > _height)
+            if (startX < 0 || startY < 0 || startX + itemWidth > width || startY + itemHeight > height)
             {
                 return false;
             }
@@ -99,7 +97,7 @@ namespace NDTB.Systems.Player.Inventory
             {
                 for (int j = 0; j < itemHeight; j++)
                 {
-                    if (_grid[startX + i, startY + j] != null && _grid[startX + i, startY + j] != item)
+                    if (grid[startX + i, startY + j] != null && grid[startX + i, startY + j] != item)
                     {
                         return false;
                     }
@@ -115,7 +113,7 @@ namespace NDTB.Systems.Player.Inventory
             {
                 for (int j = 0; j < item.GetHeight(); j++)
                 {
-                    _grid[item.X + i, item.Y + j] = item;
+                    grid[item.X + i, item.Y + j] = item;
                 }
             }
         }
@@ -128,9 +126,9 @@ namespace NDTB.Systems.Player.Inventory
                 {
                     int currentX = item.X + i;
                     int currentY = item.Y + j;
-                    if (currentX < _width && currentY < _height && _grid[currentX, currentY] == item)
+                    if (currentX < width && currentY < height && grid[currentX, currentY] == item)
                     {
-                        _grid[currentX, currentY] = null;
+                        grid[currentX, currentY] = null;
                     }
                 }
             }
@@ -143,7 +141,7 @@ namespace NDTB.Systems.Player.Inventory
                 return false;
             }
 
-            _items.Add(newItem);
+            items.Add(newItem);
             PlaceItemOnGrid(newItem);
 
             OnItemAdded?.Invoke(newItem);
@@ -152,13 +150,13 @@ namespace NDTB.Systems.Player.Inventory
 
         public void RemoveItem(InventoryItem itemToRemove)
         {
-            if (itemToRemove == null || !_items.Contains(itemToRemove))
+            if (itemToRemove == null || !items.Contains(itemToRemove))
             {
                 return;
             }
 
             RemoveItemFromGrid(itemToRemove);
-            _items.Remove(itemToRemove);
+            items.Remove(itemToRemove);
             OnItemRemoved?.Invoke(itemToRemove);
         }
 
@@ -188,13 +186,13 @@ namespace NDTB.Systems.Player.Inventory
 
         public bool IsPlacementToSlot(RectTransform item)
         {
-            if (UIHelper.IsPartialOverlap(item, _leftHandInventoryRect) && _handInventory.LeftHandSlot.IsEmpty())
+            if (UIHelper.IsPartialOverlap(item, left_Hand_Inventory_Rect) && hand_Inventory.LeftHandSlot.IsEmpty())
                 return true;
-            if (UIHelper.IsPartialOverlap(item, _rightHandInventoryRect) && _handInventory.RightHandSlot.IsEmpty())
+            if (UIHelper.IsPartialOverlap(item, right_Hand_Inventory_Rect) && hand_Inventory.RightHandSlot.IsEmpty())
                 return true;
-            if (UIHelper.IsPartialOverlap(item, _leftPocketRect) && _handInventory.LeftPocketSlot.IsEmpty())
+            if (UIHelper.IsPartialOverlap(item, left_Pocket_Rect) && hand_Inventory.LeftPocketSlot.IsEmpty())
                 return true;
-            if (UIHelper.IsPartialOverlap(item, _rightPocketRect) && _handInventory.RightPocketSlot.IsEmpty())
+            if (UIHelper.IsPartialOverlap(item, right_Pocket_Rect) && hand_Inventory.RightPocketSlot.IsEmpty())
                 return true;
             return false;
         }
@@ -202,14 +200,14 @@ namespace NDTB.Systems.Player.Inventory
         public bool EquipFromInventoryToHand(InventoryItem item, RectTransform rectTransformItem)
         {
             bool equipped = false;
-            if (UIHelper.IsPartialOverlap(rectTransformItem, _leftHandInventoryRect) && _handInventory.LeftHandSlot.IsEmpty())
-                equipped = _handInventory.TryEquipToHand(item.ItemData, Hand.Left);
-            else if (UIHelper.IsPartialOverlap(rectTransformItem, _rightHandInventoryRect) && _handInventory.RightHandSlot.IsEmpty())
-                equipped = _handInventory.TryEquipToHand(item.ItemData, Hand.Right);
-            else if (UIHelper.IsPartialOverlap(rectTransformItem, _leftPocketRect) && _handInventory.LeftPocketSlot.IsEmpty())
-                equipped = _handInventory.TryEquipToPocket(item.ItemData, Hand.Left);
-            else if (UIHelper.IsPartialOverlap(rectTransformItem, _rightPocketRect) && _handInventory.RightPocketSlot.IsEmpty())
-                equipped = _handInventory.TryEquipToPocket(item.ItemData, Hand.Right);
+            if (UIHelper.IsPartialOverlap(rectTransformItem, left_Hand_Inventory_Rect) && hand_Inventory.LeftHandSlot.IsEmpty())
+                equipped = hand_Inventory.TryEquipToHand(item.ItemData, Hand.Left);
+            else if (UIHelper.IsPartialOverlap(rectTransformItem, right_Hand_Inventory_Rect) && hand_Inventory.RightHandSlot.IsEmpty())
+                equipped = hand_Inventory.TryEquipToHand(item.ItemData, Hand.Right);
+            else if (UIHelper.IsPartialOverlap(rectTransformItem, left_Pocket_Rect) && hand_Inventory.LeftPocketSlot.IsEmpty())
+                equipped = hand_Inventory.TryEquipToPocket(item.ItemData, Hand.Left);
+            else if (UIHelper.IsPartialOverlap(rectTransformItem, right_Pocket_Rect) && hand_Inventory.RightPocketSlot.IsEmpty())
+                equipped = hand_Inventory.TryEquipToPocket(item.ItemData, Hand.Right);
 
             if (equipped)
             {
@@ -220,11 +218,11 @@ namespace NDTB.Systems.Player.Inventory
         }
 
         // FOR TEST
-        public bool TryAddItem(SO_ItemData itemData)
+        public bool TryAddItem(ItemData itemData)
         {
-            for (int y = 0; y < _height; y++)
+            for (int y = 0; y < height; y++)
             {
-                for (int x = 0; x < _width; x++)
+                for (int x = 0; x < width; x++)
                 {
                     if (IsPlacementPossible(x, y, itemData.Width, itemData.Height, null))
                     {
