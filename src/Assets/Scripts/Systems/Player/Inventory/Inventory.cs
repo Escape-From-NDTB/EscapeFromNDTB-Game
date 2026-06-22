@@ -4,6 +4,7 @@ using NDTB.Data;
 using NDTB.UI.Helpers;
 using UnityEngine;
 using UnityEngine.UI;
+
 namespace NDTB.Systems.Player.Inventory
 {
     public class Inventory : MonoBehaviour
@@ -17,7 +18,6 @@ namespace NDTB.Systems.Player.Inventory
 
         [Header("Grid Settings")]
         [SerializeField] private int _width = 6;
-
         [SerializeField] private int _height = 3;
 
         private InventoryItem[,] _grid;
@@ -33,9 +33,7 @@ namespace NDTB.Systems.Player.Inventory
 
         [Header("Drop Settings")]
         private Transform _playerCameraTransform;
-
         [SerializeField] private float _dropForce = 5f;
-
         [SerializeField] private float _dropOffset = 1.5f;
 
         private void Awake()
