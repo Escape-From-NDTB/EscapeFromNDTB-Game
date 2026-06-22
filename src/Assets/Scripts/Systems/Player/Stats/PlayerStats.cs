@@ -1,7 +1,6 @@
 using System.Linq;
 using NDTB.Core;
 using UnityEngine;
-
 namespace NDTB.Systems.Player.Stats
 {
     [RequireComponent(typeof(PlayerMovement))]
@@ -13,13 +12,15 @@ namespace NDTB.Systems.Player.Stats
         public int MaxExplanatory = 3;
 
         [Header("Current Stats")]
-        [SerializeField] private float current_Hunger;
-        [SerializeField] private float current_Sanity;
-        [SerializeField] private float current_Explanatory;
+        [SerializeField] private float _currentHunger;
 
-        public float CurrentHunger => current_Hunger;
-        public float CurrentSanity => current_Sanity;
-        public float CurrentExplanatory => current_Explanatory;
+        [SerializeField] private float _currentSanity;
+
+        [SerializeField] private float _currentExplanatory;
+
+        public float CurrentHunger => _currentHunger;
+        public float CurrentSanity => _currentSanity;
+        public float CurrentExplanatory => _currentExplanatory;
 
         [Header("Base Decay Rates (per second)")]
         public float HungerDecayRate = 0.5f;
@@ -32,45 +33,45 @@ namespace NDTB.Systems.Player.Stats
         [Header("Action Costs")]
         public float JumpHungerCost = 1f;
 
-        private IAbnormal[] abnormals;
-        private PlayerMovement player_Movement;
-        private new Camera camera;
+        private IAbnormal[] _abnormals;
+        private PlayerMovement _playerMovement;
+        private new Camera _camera;
 
         private void Start()
         {
-            player_Movement = GetComponent<PlayerMovement>();
+            _playerMovement = GetComponent<PlayerMovement>();
 
-            current_Hunger = MaxHunger;
-            current_Sanity = MaxSanity;
-            current_Explanatory = MaxExplanatory;
+            _currentHunger = MaxHunger;
+            _currentSanity = MaxSanity;
+            _currentExplanatory = MaxExplanatory;
 
             GameObject player = GameObject.FindWithTag("Player");
             if (player != null)
             {
-                camera = player.GetComponentInChildren<Camera>();
-                if (camera == null)
+                _camera = player.GetComponentInChildren<Camera>();
+                if (_camera == null)
                 {
                     Debug.LogWarning("[PlayerStats] Could not find Camera in children of Player object. Using Camera.main as fallback.");
-                    camera = Camera.main;
+                    _camera = Camera.main;
                 }
             }
             else
             {
                 Debug.LogError("[PlayerStats] Player object with tag 'Player' not found! Using Camera.main as fallback.");
-                camera = Camera.main;
+                _camera = Camera.main;
             }
 
-            if (camera == null)
+            if (_camera == null)
             {
-                Debug.LogError("[PlayerStats] No camera found (neither child of Player nor MainCamera). Abnormal effects will not work.");
+                Debug.LogError("[PlayerStats] No _camera found (neither child of Player nor MainCamera). Abnormal effects will not work.");
             }
 
-            abnormals = FindObjectsByType<MonoBehaviour>().OfType<IAbnormal>().ToArray();
+            _abnormals = FindObjectsByType<MonoBehaviour>().OfType<IAbnormal>().ToArray();
         }
 
         private void Update()
         {
-            if (player_Movement.JumpedThisFrame)
+            if (_playerMovement.JumpedThisFrame)
             {
                 ChangeHunger(-JumpHungerCost);
             }
@@ -78,19 +79,19 @@ namespace NDTB.Systems.Player.Stats
             var currentHungerDecay = HungerDecayRate;
             var currentSanityDecay = SanityDecayRate;
 
-            if (player_Movement.IsRunning)
+            if (_playerMovement.IsRunning)
             {
                 currentHungerDecay *= RunHungerMultiplier;
             }
-            else if (player_Movement.IsCrouching)
+            else if (_playerMovement.IsCrouching)
             {
                 currentHungerDecay *= CrouchHungerMultiplier;
             }
 
             var abnormalMultiplier = 0f;
-            if (camera != null && abnormals != null)
+            if (_camera != null && _abnormals != null)
             {
-                foreach (var abnormal in abnormals)
+                foreach (var abnormal in _abnormals)
                 {
                     var monoBehaviour = abnormal as MonoBehaviour;
                     if (monoBehaviour == null || !monoBehaviour.isActiveAndEnabled) continue;
@@ -111,14 +112,14 @@ namespace NDTB.Systems.Player.Stats
 
         private bool IsVisible(Renderer renderer)
         {
-            var planes = GeometryUtility.CalculateFrustumPlanes(camera);
+            var planes = GeometryUtility.CalculateFrustumPlanes(_camera);
             if (!GeometryUtility.TestPlanesAABB(planes, renderer.bounds))
             {
                 return false;
             }
 
-            Vector3 direction = renderer.bounds.center - camera.transform.position;
-            if (Physics.Raycast(camera.transform.position, direction, out var hit, direction.magnitude))
+            Vector3 direction = renderer.bounds.center - _camera.transform.position;
+            if (Physics.Raycast(_camera.transform.position, direction, out var hit, direction.magnitude))
             {
                 if (hit.collider.gameObject == renderer.gameObject)
                 {
@@ -135,20 +136,20 @@ namespace NDTB.Systems.Player.Stats
 
         public void ChangeHunger(float amount)
         {
-            current_Hunger += amount;
-            current_Hunger = Mathf.Clamp(current_Hunger, 0, MaxHunger);
+            _currentHunger += amount;
+            _currentHunger = Mathf.Clamp(_currentHunger, 0, MaxHunger);
         }
 
         public void ChangeSanity(float amount)
         {
-            current_Sanity += amount;
-            current_Sanity = Mathf.Clamp(current_Sanity, 0, MaxSanity);
+            _currentSanity += amount;
+            _currentSanity = Mathf.Clamp(_currentSanity, 0, MaxSanity);
         }
 
         public void ChangeExplanatory(float amount)
         {
-            current_Explanatory += amount;
-            current_Explanatory = Mathf.Clamp(current_Explanatory, 0, MaxExplanatory);
+            _currentExplanatory += amount;
+            _currentExplanatory = Mathf.Clamp(_currentExplanatory, 0, MaxExplanatory);
         }
     }
 }

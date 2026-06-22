@@ -9,10 +9,6 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: src
-
     steps:
       - uses: actions/checkout@v4
 
@@ -22,12 +18,12 @@ jobs:
 
       - name: Check C# formatting, style & analyzers
         run: |
-          for CSPROJ in Assembly-CSharp.csproj Assembly-CSharp-Editor.csproj; do
-            if [ -f "$CSPROJ" ]; then
-              echo "::group::Checking $CSPROJ"
-              dotnet format --verify-no-changes --severity error "$CSPROJ"
-              echo "::endgroup::"
-            else
-              echo "⚠ $CSPROJ not found — skipping"
-            fi
-          done
+          CSPROJ=src/Lint.csproj
+          if [ -f "$CSPROJ" ]; then
+            echo "::group::Checking $CSPROJ"
+            dotnet format --verify-no-changes --severity error "$CSPROJ"
+            echo "::endgroup::"
+          else
+            echo "::error::$CSPROJ not found"
+            exit 1
+          fi

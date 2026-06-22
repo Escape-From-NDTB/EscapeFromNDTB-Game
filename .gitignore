@@ -23,6 +23,7 @@ Icon
 .~lock.*
 *.DotSettings.user
 .vs/
+.idea/
 .gradle/
 
 # ====================================
@@ -60,6 +61,8 @@ ExportedObj/
 *.mdb
 *.opendb
 *.VC.db
+
+!src/Lint.csproj
 
 # Unity: generated meta for build artifacts
 *.pidb.meta
@@ -107,3 +110,6 @@ src/[Aa]ssets/Plugins/Editor/JetBrains*
 
 # Logs
 *.log
+
+report.json
+src/[Aa]ssets/_[Rr]ecovery*

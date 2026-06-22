@@ -1,23 +1,26 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-
 namespace NDTB.Systems.Player
 {
     [RequireComponent(typeof(CharacterController))]
     public class PlayerMovement : MonoBehaviour
     {
+
         [Header("Speeds")]
-        [SerializeField] private float walk_Speed = 5;
-        [SerializeField] private float run_Speed = 8;
-        [SerializeField] private float steal_Speed = 3;
+        [SerializeField] private float _walkSpeed = 5;
+
+        [SerializeField] private float _runSpeed = 8;
+
+        [SerializeField] private float _stealSpeed = 3;
 
         [Header("------")]
-        [SerializeField] private float jump_Force = 5;
-        [SerializeField] private float gravity = -9.81f;
+        [SerializeField] private float _jumpForce = 5;
 
-        private CharacterController character_Controller;
-        private Vector3 velocity;
-        private InputSystem_Actions input;
+        [SerializeField] private float _gravity = -9.81f;
+
+        private CharacterController _characterController;
+        private Vector3 _velocity;
+        private InputSystem_Actions _input;
 
         public bool IsRunning { get; private set; }
         public bool IsCrouching { get; private set; }
@@ -27,43 +30,43 @@ namespace NDTB.Systems.Player
 
         private void Awake()
         {
-            input = new InputSystem_Actions();
+            _input = new InputSystem_Actions();
         }
 
         private void OnEnable()
         {
-            input.Enable();
+            _input.Enable();
         }
 
         private void OnDisable()
         {
-            input.Disable();
+            _input.Disable();
         }
 
         private void OnDestroy()
         {
-            input.Dispose();
+            _input.Dispose();
         }
 
         private void Start()
         {
-            character_Controller = GetComponent<CharacterController>();
+            _characterController = GetComponent<CharacterController>();
         }
 
         private void Update()
         {
             JumpedThisFrame = false;
 
-            IsRunning = input.Player.Sprint.IsPressed();
-            IsCrouching = input.Player.Crouch.IsPressed();
+            IsRunning = _input.Player.Sprint.IsPressed();
+            IsCrouching = _input.Player.Crouch.IsPressed();
 
-            float currentSpeed = walk_Speed;
+            float currentSpeed = _walkSpeed;
             if (IsRunning)
-                currentSpeed = run_Speed;
+                currentSpeed = _runSpeed;
             else if (IsCrouching)
-                currentSpeed = steal_Speed;
+                currentSpeed = _stealSpeed;
 
-            Vector2 moveInput = input.Player.Move.ReadValue<Vector2>();
+            Vector2 moveInput = _input.Player.Move.ReadValue<Vector2>();
             float horizontal = moveInput.x;
             float vertical = moveInput.y;
 
@@ -77,27 +80,27 @@ namespace NDTB.Systems.Player
 
             Vector3 horizontalVelocity = move * currentSpeed;
 
-            if (character_Controller.isGrounded)
+            if (_characterController.isGrounded)
             {
-                velocity.y = -0.1f;
-                if (input.Player.Jump.IsPressed())
+                _velocity.y = -0.1f;
+                if (_input.Player.Jump.IsPressed())
                 {
-                    velocity.y = jump_Force;
+                    _velocity.y = _jumpForce;
                     JumpedThisFrame = true;
                 }
             }
             else
             {
-                velocity.y += gravity * Time.deltaTime;
+                _velocity.y += _gravity * Time.deltaTime;
             }
 
-            Vector3 finalVelocity = new Vector3(horizontalVelocity.x, velocity.y, horizontalVelocity.z);
-            character_Controller.Move(finalVelocity * Time.deltaTime);
+            Vector3 finalVelocity = new Vector3(horizontalVelocity.x, _velocity.y, horizontalVelocity.z);
+            _characterController.Move(finalVelocity * Time.deltaTime);
 
             if (IsCrouching)
-                character_Controller.height = 1f;
+                _characterController.height = 1f;
             else
-                character_Controller.height = 2f;
+                _characterController.height = 2f;
         }
     }
 }
