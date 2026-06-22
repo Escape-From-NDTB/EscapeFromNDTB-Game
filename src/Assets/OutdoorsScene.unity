@@ -422,6 +422,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: PRF_Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7795696402536702623, guid: 8c3a867c7f922daef84cbb9515b6030f, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7795696402536702623, guid: 8c3a867c7f922daef84cbb9515b6030f, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8077612448769158500, guid: 8c3a867c7f922daef84cbb9515b6030f, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8198182007293988595, guid: 8c3a867c7f922daef84cbb9515b6030f, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8198182007293988595, guid: 8c3a867c7f922daef84cbb9515b6030f, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
