@@ -11,9 +11,9 @@ namespace NDTB.Systems.Player
     public class PlayerInteraction : MonoBehaviour
     {
 
-        [SerializeField] private float _interactionDistance = 5f;
+        [SerializeField] private readonly float _interactionDistance = 5f;
 
-        [SerializeField] private CluesController _cluesController;
+        [SerializeField] private readonly CluesController _cluesController;
 
         private Transform _cameraTransform;
         private HandInventory _handInventory;

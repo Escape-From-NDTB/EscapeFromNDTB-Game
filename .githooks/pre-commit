@@ -1,16 +1,7 @@
 #!/bin/bash
-FILES=$(git diff --cached --name-only --diff-filter=ACM -- 'src/Assets/Scripts/*.cs')
-
-if [ -z "$FILES" ]; then
-    exit 0
+echo "Running dotnet format on Lint.csproj..."
+dotnet format src/Lint.csproj --verify-no-changes
+if [ $? -ne 0 ]; then
+    echo "Code formatting check failed. Run 'dotnet format src/Lint.csproj' to fix."
+    exit 1
 fi
-
-echo "Formatting staged C# files in src/Assets/Scripts..."
-
-for file in $FILES; do
-    if [ -f "$file" ]; then
-        dotnet format whitespace "$file" 2>/dev/null || true
-    fi
-done
-
-git add $FILES 2>/dev/null || true

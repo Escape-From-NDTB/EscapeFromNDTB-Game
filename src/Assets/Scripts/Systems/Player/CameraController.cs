@@ -5,7 +5,7 @@ namespace NDTB.Systems.Player
     public class CameraController : MonoBehaviour
     {
 
-        [SerializeField][Range(1, 20)] private float _rotateSpeed = 10;
+        [SerializeField][Range(1, 20)] private readonly float _rotateSpeed = 10;
 
         private Transform _cameraTransform;
         private InputSystem_Actions _input;

@@ -10,9 +10,9 @@ namespace NDTB.UI
 
         [SerializeField] private GameObject _baseUi;
 
-        [SerializeField] private GameObject[] _menus;
+        [SerializeField] private readonly GameObject[] _menus;
 
-        [SerializeField] private InputActionReference[] _menuActions;
+        [SerializeField] private readonly InputActionReference[] _menuActions;
 
         [SerializeField] private InputActionReference _pauseAction;
 

@@ -13,7 +13,7 @@ namespace NDTB.UI.Clues
 
         public void Initialize(string _text, Sprite sprite)
         {
-            float width = (float)(sprite.rect.width * (120/sprite.rect.height));
+            float width = (float)(sprite.rect.width * (120 / sprite.rect.height));
             _clueButtonTransform.sizeDelta = new Vector2(width, _clueButtonTransform.sizeDelta.y);
             if (width > 120)
             {

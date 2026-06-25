@@ -5,7 +5,7 @@ namespace NDTB.Systems.Player.Stats
 {
     public class Abnormal : MonoBehaviour, IAbnormal
     {
-        [Range(0, 10)][SerializeField] private float _level;
+        [Range(0, 10)][SerializeField] private readonly float _level;
         public float Level => _level;
     }
 }

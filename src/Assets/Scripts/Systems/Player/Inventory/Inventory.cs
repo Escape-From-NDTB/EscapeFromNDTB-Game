@@ -17,11 +17,11 @@ namespace NDTB.Systems.Player.Inventory
         public bool IsOpen => _inventoryUi.activeSelf;
 
         [Header("Grid Settings")]
-        [SerializeField] private int _width = 6;
-        [SerializeField] private int _height = 3;
+        [SerializeField] private readonly int _width = 6;
+        [SerializeField] private readonly int _height = 3;
 
         private InventoryItem[,] _grid;
-        private List<InventoryItem> _items = new List<InventoryItem>();
+        private readonly List<InventoryItem> _items = new List<InventoryItem>();
 
         [Header("UI")]
         [SerializeField] private GameObject _inventoryUi;
@@ -33,8 +33,8 @@ namespace NDTB.Systems.Player.Inventory
 
         [Header("Drop Settings")]
         private Transform _playerCameraTransform;
-        [SerializeField] private float _dropForce = 5f;
-        [SerializeField] private float _dropOffset = 1.5f;
+        [SerializeField] private readonly float _dropForce = 5f;
+        [SerializeField] private readonly float _dropOffset = 1.5f;
 
         private void Awake()
         {

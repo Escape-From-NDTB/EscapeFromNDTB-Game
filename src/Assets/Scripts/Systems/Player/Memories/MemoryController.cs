@@ -7,7 +7,7 @@ namespace NDTB.Systems.Player.Memories
     public class MemoryController : MonoBehaviour
     {
 
-        [SerializeField] private Memories _memories;
+        [SerializeField] private readonly Memories _memories;
 
         [SerializeField] private GameObject _memoryUiPrefab;
 
@@ -15,7 +15,7 @@ namespace NDTB.Systems.Player.Memories
 
         [SerializeField] private Text _memoryFullText;
 
-        private Dictionary<SO_Memory, GameObject> _memoryUiItems = new Dictionary<SO_Memory, GameObject>();
+        private readonly Dictionary<SO_Memory, GameObject> _memoryUiItems = new Dictionary<SO_Memory, GameObject>();
 
         private void Start()
         {

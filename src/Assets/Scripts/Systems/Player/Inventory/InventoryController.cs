@@ -20,11 +20,11 @@ namespace NDTB.Systems.Player.Inventory
         public Transform DragAndDropContainer => _dragAndDropContainer;
 
         [Tooltip("The size of a single grid cell in pixels.")]
-        [SerializeField] private float _cellSize = 100f;
+        [SerializeField] private readonly float _cellSize = 100f;
         public float CellSize => _cellSize;
 
         // Maps the data item to its UI game object representation.
-        private Dictionary<InventoryItem, GameObject> _itemToGameObjectMap = new Dictionary<InventoryItem, GameObject>();
+        private readonly Dictionary<InventoryItem, GameObject> _itemToGameObjectMap = new Dictionary<InventoryItem, GameObject>();
 
         private void Awake()
         {

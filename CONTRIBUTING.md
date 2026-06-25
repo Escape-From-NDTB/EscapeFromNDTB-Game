@@ -22,12 +22,16 @@ Your IDE will highlight violations automatically. Key rules:
 
 ## Pre-commit Hook
 
-The pre-commit hook runs `dotnet format whitespace` on all `.cs` files in
-`src/Assets/Scripts/`. To enable it:
+The pre-commit hook runs `dotnet format src/Lint.csproj --verify-no-changes` on commit.
+This enforces the full `.editorconfig` style rules (whitespace, naming conventions, etc.).
+
+To enable it:
 
 ```bash
 scripts/setup-hooks.sh
 ```
+
+If the hook fails, run `dotnet format src/Lint.csproj` to auto-fix formatting issues.
 
 ## Pull Request Process
 

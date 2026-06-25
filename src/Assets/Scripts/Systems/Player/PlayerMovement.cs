@@ -7,16 +7,16 @@ namespace NDTB.Systems.Player
     {
 
         [Header("Speeds")]
-        [SerializeField] private float _walkSpeed = 5;
+        [SerializeField] private readonly float _walkSpeed = 5;
 
-        [SerializeField] private float _runSpeed = 8;
+        [SerializeField] private readonly float _runSpeed = 8;
 
-        [SerializeField] private float _stealSpeed = 3;
+        [SerializeField] private readonly float _stealSpeed = 3;
 
         [Header("------")]
-        [SerializeField] private float _jumpForce = 5;
+        [SerializeField] private readonly float _jumpForce = 5;
 
-        [SerializeField] private float _gravity = -9.81f;
+        [SerializeField] private readonly float _gravity = -9.81f;
 
         private CharacterController _characterController;
         private Vector3 _velocity;

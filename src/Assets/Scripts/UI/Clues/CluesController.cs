@@ -5,7 +5,7 @@ namespace NDTB.UI.Clues
     public class CluesController : MonoBehaviour
     {
 
-        [SerializeField] private Clue _cluePrefab;
+        [SerializeField] private readonly Clue _cluePrefab;
 
         [SerializeField] private Transform _parent;
 
