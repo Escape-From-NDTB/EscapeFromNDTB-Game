@@ -902,9 +902,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f932ae66767ee66f831957d76591d35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Default_Color: {r: 0, g: 0, b: 0, a: 0}
-  Can_Color: {r: 0, g: 1, b: 0, a: 0.5}
-  Cant_Color: {r: 1, g: 0, b: 0, a: 0.5}
+  _defaultColor: {r: 0, g: 0, b: 0, a: 0}
+  _canColor: {r: 0, g: 1, b: 0, a: 0.5}
+  _cantColor: {r: 1, g: 0, b: 0, a: 0.5}
   _rotateAction: {fileID: -2367264800756329113, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
   _dropAction: {fileID: -6719990756418633600, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
   Hand: 1
@@ -1320,9 +1320,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f932ae66767ee66f831957d76591d35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Default_Color: {r: 0, g: 0, b: 0, a: 0}
-  Can_Color: {r: 0, g: 1, b: 0, a: 0.5}
-  Cant_Color: {r: 1, g: 0, b: 0, a: 0.5}
+  _defaultColor: {r: 0, g: 0, b: 0, a: 0}
+  _canColor: {r: 0, g: 1, b: 0, a: 0.5}
+  _cantColor: {r: 1, g: 0, b: 0, a: 0.5}
   _rotateAction: {fileID: -2367264800756329113, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
   _dropAction: {fileID: -6719990756418633600, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
   Hand: 0
@@ -1415,9 +1415,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f932ae66767ee66f831957d76591d35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Default_Color: {r: 0, g: 0, b: 0, a: 0}
-  Can_Color: {r: 0, g: 1, b: 0, a: 0.5}
-  Cant_Color: {r: 1, g: 0, b: 0, a: 0.5}
+  _defaultColor: {r: 0, g: 0, b: 0, a: 0}
+  _canColor: {r: 0, g: 1, b: 0, a: 0.5}
+  _cantColor: {r: 1, g: 0, b: 0, a: 0.5}
   _rotateAction: {fileID: -2367264800756329113, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
   _dropAction: {fileID: -6719990756418633600, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
   Hand: 0
@@ -1510,9 +1510,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f932ae66767ee66f831957d76591d35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Default_Color: {r: 0, g: 0, b: 0, a: 0}
-  Can_Color: {r: 0, g: 1, b: 0, a: 0.5}
-  Cant_Color: {r: 1, g: 0, b: 0, a: 0.5}
+  _defaultColor: {r: 0, g: 0, b: 0, a: 0}
+  _canColor: {r: 0, g: 1, b: 0, a: 0.5}
+  _cantColor: {r: 1, g: 0, b: 0, a: 0.5}
   _rotateAction: {fileID: -2367264800756329113, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
   _dropAction: {fileID: -6719990756418633600, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
   Hand: 1
@@ -2765,9 +2765,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interactionDistance: 5
   _cluesController: {fileID: 5346508283303090012}
-  _interactClue: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  _pickClue: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  _memoryClue: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  _interactClue: {fileID: 21300000, guid: 596ae64031fe911f2ad7221d3501a1e6, type: 3}
+  _pickClue: {fileID: 21300000, guid: 9e20d1d56015219b78123a4ddd500114, type: 3}
+  _memoryClue: {fileID: 21300000, guid: 5e5383ed1a9f8e77dad2765e3a1d9996, type: 3}
   _interactInstantAction: {fileID: -467097829888126487, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
   _pickAction: {fileID: -4188050997879839101, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
   _rememberAction: {fileID: -1404343794775317843, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
@@ -3028,7 +3028,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4219893248670005826
 RectTransform:
   m_ObjectHideFlags: 0
