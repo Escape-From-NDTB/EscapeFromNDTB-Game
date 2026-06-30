@@ -27,6 +27,22 @@ jobs:
             Library-${{ runner.os }}-${{ env.UNITY_VERSION }}-
             Library-${{ runner.os }}-
 
+      - uses: actions/cache@v4
+        id: cache-unity-docker
+        with:
+          path: /tmp/unity-docker-image
+          key: unity-docker-${{ env.UNITY_VERSION }}
+
+      - name: Pre-pull and cache Unity Docker image
+        if: steps.cache-unity-docker.outputs.cache-hit != 'true'
+        run: |
+          docker pull gameci/unity:${{ env.UNITY_VERSION }}-linux-il2cpp
+          docker save gameci/unity:${{ env.UNITY_VERSION }}-linux-il2cpp -o /tmp/unity-docker-image
+
+      - name: Load Unity Docker image from cache
+        if: steps.cache-unity-docker.outputs.cache-hit == 'true'
+        run: docker load -i /tmp/unity-docker-image
+
       - uses: game-ci/unity-test-runner@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -53,6 +69,22 @@ jobs:
           restore-keys: |
             Library-${{ runner.os }}-${{ env.UNITY_VERSION }}-
             Library-${{ runner.os }}-
+
+      - uses: actions/cache@v4
+        id: cache-unity-docker
+        with:
+          path: /tmp/unity-docker-image
+          key: unity-docker-${{ env.UNITY_VERSION }}
+
+      - name: Pre-pull and cache Unity Docker image
+        if: steps.cache-unity-docker.outputs.cache-hit != 'true'
+        run: |
+          docker pull gameci/unity:${{ env.UNITY_VERSION }}-linux-il2cpp
+          docker save gameci/unity:${{ env.UNITY_VERSION }}-linux-il2cpp -o /tmp/unity-docker-image
+
+      - name: Load Unity Docker image from cache
+        if: steps.cache-unity-docker.outputs.cache-hit == 'true'
+        run: docker load -i /tmp/unity-docker-image
 
       - uses: game-ci/unity-builder@v4
         env:
@@ -100,6 +132,22 @@ jobs:
             Library-${{ runner.os }}-${{ env.UNITY_VERSION }}-
             Library-${{ runner.os }}-
 
+      - uses: actions/cache@v4
+        id: cache-unity-docker
+        with:
+          path: /tmp/unity-docker-image
+          key: unity-docker-${{ env.UNITY_VERSION }}
+
+      - name: Pre-pull and cache Unity Docker image
+        if: steps.cache-unity-docker.outputs.cache-hit != 'true'
+        run: |
+          docker pull gameci/unity:${{ env.UNITY_VERSION }}-linux-il2cpp
+          docker save gameci/unity:${{ env.UNITY_VERSION }}-linux-il2cpp -o /tmp/unity-docker-image
+
+      - name: Load Unity Docker image from cache
+        if: steps.cache-unity-docker.outputs.cache-hit == 'true'
+        run: docker load -i /tmp/unity-docker-image
+
       - uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -146,6 +194,12 @@ jobs:
             Library-${{ runner.os }}-${{ env.UNITY_VERSION }}-
             Library-${{ runner.os }}-
 
+      - uses: actions/cache@v4
+        id: cache-unity-mac
+        with:
+          path: /Applications/Unity/Hub/Editor/${{ env.UNITY_VERSION }}
+          key: unity-mac-${{ env.UNITY_VERSION }}
+
       - uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -156,6 +210,7 @@ jobs:
           targetPlatform: StandaloneOSX
           projectPath: src
           allowDirtyBuild: true
+          cacheUnityInstallationOnMac: true
 
       - uses: actions/upload-artifact@v4
         with:
