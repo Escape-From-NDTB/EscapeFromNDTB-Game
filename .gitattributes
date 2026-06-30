@@ -19,8 +19,8 @@
 *.spriteatlas text
 *.terrainlayer text
 *.signal text
-*.ttf     text
-*.otf     text
+*.ttf     filter=lfs diff=lfs merge=lfs -text
+*.otf     filter=lfs diff=lfs merge=lfs -text
 
 # Images / Textures
 *.png     filter=lfs diff=lfs merge=lfs -text
