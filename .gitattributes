@@ -89,3 +89,19 @@
 *.so      filter=lfs diff=lfs merge=lfs -text
 *.dylib   filter=lfs diff=lfs merge=lfs -text
 *.bundle  filter=lfs diff=lfs merge=lfs -text
+
+# Shell
+*.sh      linguist-vendored
+*.bash    linguist-vendored
+*.zsh     linguist-vendored
+*.fish    linguist-vendored
+
+# Wolfram
+*.wl      linguist-vendored
+*.wls     linguist-vendored
+*.wolfram linguist-vendored
+
+# Other (optional)
+*.r       linguist-vendored
+*.pl      linguist-vendored
+*.pm      linguist-vendored
