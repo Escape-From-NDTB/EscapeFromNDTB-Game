@@ -31,13 +31,13 @@ jobs:
         id: cache-unity-docker
         with:
           path: /tmp/unity-docker-image
-          key: unity-docker-${{ env.UNITY_VERSION }}
+          key: unity-docker-linux-il2cpp-${{ env.UNITY_VERSION }}
 
       - name: Pre-pull and cache Unity Docker image
         if: steps.cache-unity-docker.outputs.cache-hit != 'true'
         run: |
-          docker pull gameci/unity:${{ env.UNITY_VERSION }}-linux-il2cpp
-          docker save gameci/unity:${{ env.UNITY_VERSION }}-linux-il2cpp -o /tmp/unity-docker-image
+          docker pull unityci/editor:ubuntu-${{ env.UNITY_VERSION }}-linux-il2cpp-3
+          docker save unityci/editor:ubuntu-${{ env.UNITY_VERSION }}-linux-il2cpp-3 -o /tmp/unity-docker-image
 
       - name: Load Unity Docker image from cache
         if: steps.cache-unity-docker.outputs.cache-hit == 'true'
@@ -74,13 +74,13 @@ jobs:
         id: cache-unity-docker
         with:
           path: /tmp/unity-docker-image
-          key: unity-docker-${{ env.UNITY_VERSION }}
+          key: unity-docker-linux-il2cpp-${{ env.UNITY_VERSION }}
 
       - name: Pre-pull and cache Unity Docker image
         if: steps.cache-unity-docker.outputs.cache-hit != 'true'
         run: |
-          docker pull gameci/unity:${{ env.UNITY_VERSION }}-linux-il2cpp
-          docker save gameci/unity:${{ env.UNITY_VERSION }}-linux-il2cpp -o /tmp/unity-docker-image
+          docker pull unityci/editor:ubuntu-${{ env.UNITY_VERSION }}-linux-il2cpp-3
+          docker save unityci/editor:ubuntu-${{ env.UNITY_VERSION }}-linux-il2cpp-3 -o /tmp/unity-docker-image
 
       - name: Load Unity Docker image from cache
         if: steps.cache-unity-docker.outputs.cache-hit == 'true'
@@ -136,13 +136,13 @@ jobs:
         id: cache-unity-docker
         with:
           path: /tmp/unity-docker-image
-          key: unity-docker-${{ env.UNITY_VERSION }}
+          key: unity-docker-windows-mono-${{ env.UNITY_VERSION }}
 
       - name: Pre-pull and cache Unity Docker image
         if: steps.cache-unity-docker.outputs.cache-hit != 'true'
         run: |
-          docker pull gameci/unity:${{ env.UNITY_VERSION }}-linux-il2cpp
-          docker save gameci/unity:${{ env.UNITY_VERSION }}-linux-il2cpp -o /tmp/unity-docker-image
+          docker pull unityci/editor:ubuntu-${{ env.UNITY_VERSION }}-windows-mono-3
+          docker save unityci/editor:ubuntu-${{ env.UNITY_VERSION }}-windows-mono-3 -o /tmp/unity-docker-image
 
       - name: Load Unity Docker image from cache
         if: steps.cache-unity-docker.outputs.cache-hit == 'true'
